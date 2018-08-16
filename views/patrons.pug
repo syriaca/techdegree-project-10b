@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  h1 #{title}
+  p
+    a.button(href='/patrons/new') Create New Patron
+  table
+    thead
+      tr
+        th Name 
+        th Address
+        th Email
+        th Library ID
+        th Zip
+    tbody
+      each test in patron
+        tr
+          td
+            a(href='patron_detail.html')= test.first_name
+          td= test.address
+          td= test.email
+          td= test.library_id
+          td= test.zip_code
