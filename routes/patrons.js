@@ -2,12 +2,11 @@ var express = require('express');
 var router = express.Router();
 var Patrons = require('../models').Patrons;
 
-
 router.get('/', function(req, res, next) {
   Patrons.findAll().then(function(patrons) {
     res.render('patrons', {
       title: 'All patrons',
-      patron: patrons
+      patrons: patrons
     });
   });
 });
