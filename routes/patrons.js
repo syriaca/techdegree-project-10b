@@ -17,4 +17,11 @@ router.get('/new', function(req, res, next) {
   res.render('patrons/new', { title: 'New Patron' });
 });
 
+// Create a new PATRON
+router.post('/', function(req, res, next){
+  Patrons.create(req.body).then(function(patron){
+    res.redirect('/patrons/'+ patron.id);
+  });
+});
+
 module.exports = router;

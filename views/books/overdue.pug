@@ -3,14 +3,17 @@ extends ../layout
 block content
   h1 #{title}
   p
-    a.button(href='/books/new') Create New Book
-
-  include ../includes/navigation-filter.pug
-
+    a.button(href='new_book.html') Create New Book
+  p
+    | Filters 
+    a(href='all_books.html') All
+    |  
+    a(href='overdue_books.html') Overdue
+    |  
+    a(href='checked_books.html') Checked Out
   table
     thead
       tr
-        th id
         th Title
         th Author
         th Genre
@@ -18,7 +21,6 @@ block content
     tbody
       each book in books
         tr
-            td #{book.booksId}
             td
               a(href='book_detail.html') #{book.title}
             td #{book.author}

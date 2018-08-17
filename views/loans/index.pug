@@ -23,8 +23,8 @@ block content
             a(href='book_detail.html') Emma
           td
             a(href='patron_detail.html') Dave McFarland
-          td #{loan.loaned_on}
-          td #{loan.return_by}
+          td #{loan.formatedDate(loan.loaned_on)}
+          td #{loan.formatedDate(loan.return_by)}
           td #{loan.returned_on}
           td
             a.button(href='return_book.html') Return Book
