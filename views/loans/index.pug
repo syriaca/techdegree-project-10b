@@ -1,11 +1,11 @@
-extends layout
+extends ../layout
 
 block content
   h1 #{title}
   p
     a.button(href='/loans/new') Create New Loan
 
-  include includes/navigation-filter.pug
+  include ../includes/navigation-filter.pug
 
   table
     thead
