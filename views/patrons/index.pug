@@ -4,6 +4,7 @@ block content
   h1 #{title}
   p
     a.button(href='/patrons/new') Create New Patron
+  
   table
     thead
       tr
@@ -16,7 +17,7 @@ block content
       each patron in patrons
         tr
           td
-            a(href='patron_detail.html') #{patron.first_name}
+            a(href=`/patrons/${patron.id}`) #{patron.first_name}
           td #{patron.address}
           td #{patron.email}
           td #{patron.library_id}
