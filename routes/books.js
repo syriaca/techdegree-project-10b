@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Books = require('../models').Books;
 
-// Route to list ALL books
+/* GET all books list */
 router.get('/', function(req, res, next) {
   Books.findAll().then(function(books){
     res.render('books/index', { 
@@ -13,19 +13,28 @@ router.get('/', function(req, res, next) {
   });
 });
 
-// Route to create a NEW Books
+/* GET individual book details */
+router.get('/:id', function(req, res, next) {
+  Books.findById(req.params.id).then(function(book){
+    res.render('books/details', { 
+      book: book
+    });
+  });
+});
+
+/* GET Create a NEW Book */
 router.get('/new', function(req, res, next) {
   res.render('books/new', { title: 'New Book' });
 });
 
-// Create a new BOOK
+/* POST Create a NEW Book */
 router.post('/', function(req, res, next){
   Books.create(req.body).then(function(book){
     res.redirect('/books/'+ book.id);
   });
 });
 
-// Route to list OVERDUE Books
+/* GET Show overdue Book list */
 router.get('/overdue', function(req, res, next) {
   Books.findAll().then(function(books){
     res.render('books/overdue', {
@@ -36,7 +45,7 @@ router.get('/overdue', function(req, res, next) {
   });
 });
 
-// Route to list OVERDUE Books
+/* GET Show checkoud out Book list */
 router.get('/checked_out', function(req, res, next) {
   Books.findAll().then(function(books){
     res.render('books/checked', {
@@ -47,5 +56,4 @@ router.get('/checked_out', function(req, res, next) {
   });
 });
 
-// Route to list CHECKEDOUT Books
 module.exports = router;
