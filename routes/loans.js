@@ -49,7 +49,7 @@ router.get('/overdue', function(req, res, next) {
 });
 
 /* GET checked_out loan */
-router.get('/checked', function(req, res, next) {
+router.get('/checked_out', function(req, res, next) {
   Loans.findAll().then(function(loans) {
     res.render('loans/index', {
       title: 'Checked out loans',

@@ -30,6 +30,7 @@ router.get('/overdue', function(req, res, next) {
   Books.findAll().then(function(books){
     res.render('books/overdue', {
       title: 'Overdue Books',
+      page: req.baseUrl,
       books: books
     });
   });
@@ -40,6 +41,7 @@ router.get('/checked_out', function(req, res, next) {
   Books.findAll().then(function(books){
     res.render('books/checked', {
       title: 'Checked Out Books',
+      page: req.baseUrl,
       books: books
     });
   });
