@@ -37,7 +37,26 @@ router.post('/', function(req, res, next) {
   });
 });
 
-// Route to list OVERDUE Loans
-// Route to list CHECKEDOUT Loans
+/* GET overdue loan */
+router.get('/overdue', function(req, res, next) {
+  Loans.findAll().then(function(loans) {
+    res.render('loans/index', {
+      title: 'Overdue loans',
+      page: req.baseUrl,
+      loans: loans
+    });
+  });
+});
+
+/* GET checked_out loan */
+router.get('/checked', function(req, res, next) {
+  Loans.findAll().then(function(loans) {
+    res.render('loans/index', {
+      title: 'Checked out loans',
+      page: req.baseUrl,
+      loans: loans
+    });
+  });
+});
 
 module.exports = router;

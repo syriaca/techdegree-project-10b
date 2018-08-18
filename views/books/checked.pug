@@ -1,16 +1,12 @@
 extends ../layout
 
 block content
-    h1 Checked Out Books
+    h1 #{title}
     p
         a.button(href='new_book.html') Create New Book
-    p
-        | Filters 
-        a(href='all_books.html') All
-        |  
-        a(href='overdue_books.html') Overdue
-        |  
-        a(href='checked_books.html') Checked Out
+    
+    include ../includes/navigation-filter.pug
+
     table
         thead
             tr
