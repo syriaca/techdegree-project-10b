@@ -26,10 +26,20 @@ router.post('/', function(req, res, next){
 });
 
 // Route to list OVERDUE Books
-router.get('/?filter=overdue', function(req, res, next) {
+router.get('/overdue', function(req, res, next) {
   Books.findAll().then(function(books){
     res.render('books/overdue', {
       title: 'Overdue Books',
+      books: books
+    });
+  });
+});
+
+// Route to list OVERDUE Books
+router.get('/checked_out', function(req, res, next) {
+  Books.findAll().then(function(books){
+    res.render('books/checked', {
+      title: 'Checked Out Books',
       books: books
     });
   });
