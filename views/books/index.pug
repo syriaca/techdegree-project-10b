@@ -10,7 +10,6 @@ block content
   table
     thead
       tr
-        th id
         th Title
         th Author
         th Genre
@@ -18,7 +17,6 @@ block content
     tbody
       each book in books
         tr
-            td #{book.booksId}
             td
               a(href='book_detail.html') #{book.title}
             td #{book.author}
