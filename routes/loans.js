@@ -1,8 +1,8 @@
-var express = require('express');
-var router = express.Router();
-var Books = require('../models').Books;
-var Loans = require('../models').Loans;
-var Patrons = require('../models').Patrons;
+const express = require('express');
+const router = express.Router();
+const Books = require('../models').Books;
+const Loans = require('../models').Loans;
+const Patrons = require('../models').Patrons;
 
 /* GET All loans */
 router.get('/', function(req, res, next) {
