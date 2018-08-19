@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Books = require('../models').Books;
 
-/* GET: show book list */
+/* GET: Show book list */
 router.get('/', (req, res, next) => {
   Books
     .findAll()

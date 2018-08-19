@@ -4,59 +4,70 @@ const Books = require('../models').Books;
 const Loans = require('../models').Loans;
 const Patrons = require('../models').Patrons;
 
-/* GET All loans */
-router.get('/', function(req, res, next) {
-  Loans.findAll({order:[['loaned_on',"DESC"]]}).then(function(loans) {
-    res.render('loans/index', {
-      title: 'All loans',
-      page: req.baseUrl,
-      loans: loans
-    });
-  });
-});
-
-/* GET new loan */
-router.get('/new', function(req, res, next) {
-  Books.findAll().then(function(books) {
-    Patrons.findAll().then(function(patrons) {
-      res.render('loans/new', {
-        title: 'New loans',
+/* GET: All loans list */
+router.get('/', (req, res, next) => {
+  Loans
+    .findAll({order:[['loaned_on',"DESC"]]})
+    .then(loans => {
+      res.render('loans/index', {
+        title: 'All loans',
         page: req.baseUrl,
-        books: books,
-        patrons: patrons
+        loans: loans
       });
     });
+});
+
+/* GET: Show view to create a new loan */
+router.get('/new', (req, res, next)=> {
+  Books
+    .findAll()
+    .then(books => {
+    Patrons
+      .findAll()
+      .then(patrons => {
+        res.render('loans/new', {
+          title: 'New loans',
+          page: req.baseUrl,
+          books: books,
+          patrons: patrons
+        });
+      });
   });
 });
 
-/* POST create new loan */
-router.post('/', function(req, res, next) {
-  console.log(req.body.loaned_on);
-  Loans.create(req.body).then(function(loans) {
-    res.redirect('/loans');
-  });
-});
-
-/* GET overdue loan */
-router.get('/overdue', function(req, res, next) {
-  Loans.findAll().then(function(loans) {
-    res.render('loans/index', {
-      title: 'Overdue loans',
-      page: req.baseUrl,
-      loans: loans
+/* POST: Create new loan */
+router.post('/', (req, res, next) => {
+  Loans
+    .create(req.body)
+    .then(() => {
+      res.redirect('/loans');
     });
-  });
 });
 
-/* GET checked_out loan */
-router.get('/checked_out', function(req, res, next) {
-  Loans.findAll().then(function(loans) {
-    res.render('loans/index', {
-      title: 'Checked out loans',
-      page: req.baseUrl,
-      loans: loans
+/* GET: Overdue loan */
+router.get('/overdue', (req, res, next) => {
+  Loans
+    .findAll()
+    .then(loans => {
+      res.render('loans/index', {
+        title: 'Overdue loans',
+        page: req.baseUrl,
+        loans: loans
+      });
     });
-  });
+});
+
+/* GET: Checked_out loan */
+router.get('/checked_out', (req, res, next) => {
+  Loans
+    .findAll()
+    .then(loans => {
+      res.render('loans/checked', {
+        title: 'Checked out loans',
+        page: req.baseUrl,
+        loans: loans
+      });
+    });
 });
 
 module.exports = router;
