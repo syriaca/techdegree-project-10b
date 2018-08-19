@@ -34,7 +34,7 @@ router.post('/', function(req, res, next){
   });
 });
 
-/* PUT: Update a book details */
+/* POST: Update a book details */
   router.post('/:id', (req, res, next) => {
     Books
       .findById(req.params.id)

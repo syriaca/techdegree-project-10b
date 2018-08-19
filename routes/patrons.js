@@ -21,6 +21,14 @@ router.get('/details/:id', function(req, res, next) {
   });
 });
 
+/* POST: Update patron details */
+router.post('/:id', (req, res, next) => {
+  Patrons
+    .findById(req.params.id)
+    .then(patron => {return patron.update(req.body);})
+    .then(() => {res.redirect('/patrons/details/'+req.params.id);});
+});
+
 /* GET: Show patron creation form page */
 router.get('/new', function(req, res, next) {
   res.render('patrons/new', { patron: Patrons.build(), title: 'New Patron' });
