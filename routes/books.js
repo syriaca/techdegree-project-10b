@@ -3,9 +3,11 @@ const router = express.Router();
 const Books = require('../models').Books;
 
 /* GET: show book list */
-router.get('/', function(req, res, next) {
-  Books.findAll().then(function(books){
-    res.render('books/index', { 
+router.get('/', (req, res, next) => {
+  Books
+    .findAll()
+    .then(books => {
+    res.render('books/index', {
       title: 'All books', 
       page: req.baseUrl,
       books: books
@@ -14,8 +16,10 @@ router.get('/', function(req, res, next) {
 });
 
 /* GET: Show individual book details */
-router.get('/details/:id', function(req, res, next) {
-  Books.findById(req.params.id).then(function(book){
+router.get('/details/:id', (req, res, next) => {
+  Books
+    .findById(req.params.id)
+    .then(book => {
     res.render('books/details', { 
       book: book
     });
@@ -23,14 +27,16 @@ router.get('/details/:id', function(req, res, next) {
 });
 
 /* GET: Show new book creation page */
-router.get('/new', function(req, res, next) {
+router.get('/new', (req, res, next) => {
   res.render('books/new', { book: Books.build(), title: 'New Book' });
 });
 
 /* POST: Create a new Book */
-router.post('/', function(req, res, next){
-  Books.create(req.body).then(function(book){
-    res.redirect('/books/details/'+ book.id);
+router.post('/', (req, res, next) => {
+  Books
+    .create(req.body)
+    .then(book => {
+      res.redirect('/books/details/'+ book.id);
   });
 });
 
@@ -38,17 +44,19 @@ router.post('/', function(req, res, next){
   router.post('/:id', (req, res, next) => {
     Books
       .findById(req.params.id)
-      .then(function(book){
+      .then(book => {
         return book.update(req.body);
       })
-      .then(function(){
+      .then(() => {
         res.redirect('/books/details/'+req.params.id)
       });
   });
 
 /* GET: Show overdue books list */
-router.get('/overdue', function(req, res, next) {
-  Books.findAll().then(function(books){
+router.get('/overdue', (req, res, next) => {
+  Books
+    .findAll()
+    .then(books => {
     res.render('books/overdue', {
       title: 'Overdue Books',
       page: req.baseUrl,
@@ -57,9 +65,11 @@ router.get('/overdue', function(req, res, next) {
   });
 });
 
-/* GET => Show checked out books list */
-router.get('/checked_out', function(req, res, next) {
-  Books.findAll().then(function(books){
+/* GET: Show checked out books list */
+router.get('/checked_out', (req, res, next) => {
+  Books
+    .findAll()
+    .then(books => {
     res.render('books/checked', {
       title: 'Checked Out Books',
       page: req.baseUrl,
