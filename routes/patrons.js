@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Patrons = require('../models').Patrons;
 
-/* GET ALL Patrons list */
+/* GET: Show all patrons list */
 router.get('/', function(req, res, next) {
   Patrons.findAll().then(function(patrons) {
     res.render('patrons/index', {
@@ -12,8 +12,8 @@ router.get('/', function(req, res, next) {
   });
 });
 
-/* GET ALL Patrons list */
-router.get('/:id', function(req, res, next) {
+/* GET: Show individual patron */
+router.get('/details/:id', function(req, res, next) {
   Patrons.findById(req.params.id).then(function(patron) {
     res.render('patrons/details', {
       patron: patron
@@ -21,15 +21,15 @@ router.get('/:id', function(req, res, next) {
   });
 });
 
-/* GET New Patron creation page */
+/* GET: Show patron creation form page */
 router.get('/new', function(req, res, next) {
-  res.render('patrons/new', { title: 'New Patron' });
+  res.render('patrons/new', { patron: Patrons.build(), title: 'New Patron' });
 });
 
-/* POST CREATE a new Patron */
+/* POST: Create a new patron */
 router.post('/', function(req, res, next){
   Patrons.create(req.body).then(function(patron){
-    res.redirect('/patrons/'+ patron.id);
+    res.redirect('/patrons/details/'+ patron.id);
   });
 });
 
