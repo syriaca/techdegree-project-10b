@@ -1,3 +1,14 @@
+// TODO: PATRON DETAIL PAGE
+// 1) Shows a Loan History table
+// 2) Each entry in the loans table should have links to books, patrons and if the book is checked out, the link to the return book page.
+// 3) An error is displayed if the form is submitted with blank or invalid data 
+//    in required fields. For example: “This field is required.”
+
+
+// TODO: NEW PATRON PAGE
+// 1) An error is displayed if the form is submitted with blank or invalid data 
+//    in required fields. For example: “This field is required.”
+
 const express = require('express');
 const router = express.Router();
 const Patrons = require('../models').Patrons;

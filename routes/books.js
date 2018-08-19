@@ -1,3 +1,16 @@
+// TODO: BOOKS LISTING PAGE
+// 1) Includes option to filter books by “Overdue”, and “Checked Out”
+
+// TODO: NEW BOOK PAGE
+// 1) An error is displayed if the form is submitted with blank or invalid data 
+//    in required fields. For example: “This field is required.”
+
+// TODO: BOOK DETAIL PAGE
+// 1) Contains a Loan History table with the following columns: book name, patron, loaned on, return by, returned on and action.
+// 2) If the book is checked out, the “Action” column contains a link to return the book
+// 3) An error is displayed if the form is submitted with blank or invalid data 
+//    in required fields. For example: “This field is required.”
+
 const express = require('express');
 const router = express.Router();
 const Books = require('../models').Books;
