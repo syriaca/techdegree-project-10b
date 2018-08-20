@@ -20,12 +20,15 @@ router.get('/', (req, res, next) => {
   Books
     .findAll()
     .then(books => {
-    res.render('books/index', {
-      title: 'All books', 
-      page: req.baseUrl,
-      books: books
+      res.render('books/index', {
+        title: 'All books', 
+        page: req.baseUrl,
+        books: books
+      });
+    })
+    .catch((err)=>{
+      res.send(500);
     });
-  });
 });
 
 /* GET: Show individual book details */
@@ -33,10 +36,17 @@ router.get('/details/:id', (req, res, next) => {
   Books
     .findById(req.params.id)
     .then(book => {
-    res.render('books/details', { 
-      book: book
+      if (book) {
+        res.render('books/details', { 
+          book: book
+        });
+      } else {
+        res.send(404);
+      }  
+    })
+    .catch((err)=>{
+      res.send(500);
     });
-  });
 });
 
 /* GET: Show new book creation page */
@@ -50,32 +60,45 @@ router.post('/', (req, res, next) => {
     .create(req.body)
     .then(book => {
       res.redirect('/books/details/'+ book.id);
-  });
+    })
+    .catch((err)=>{
+      res.send(500);
+    });
 });
 
 /* POST: Update a book details */
-  router.post('/:id', (req, res, next) => {
-    Books
-      .findById(req.params.id)
-      .then(book => {
+router.post('/:id', (req, res, next) => {
+  Books
+    .findById(req.params.id)
+    .then(book => {
+      if (book) {
         return book.update(req.body);
-      })
-      .then(() => {
-        res.redirect('/books/details/'+req.params.id)
-      });
-  });
+      } else {
+        res.send(404);
+      }
+    })
+    .then(() => {
+      res.redirect('/books/details/'+req.params.id)
+    })
+    .catch((err)=>{
+      res.send(500);
+    });
+});
 
 /* GET: Show overdue books list */
 router.get('/overdue', (req, res, next) => {
   Books
     .findAll()
     .then(books => {
-    res.render('books/overdue', {
-      title: 'Overdue Books',
-      page: req.baseUrl,
-      books: books
+      res.render('books/overdue', {
+        title: 'Overdue Books',
+        page: req.baseUrl,
+        books: books
+      });
+    })
+    .catch((err)=>{
+      res.send(500);
     });
-  });
 });
 
 /* GET: Show checked out books list */
@@ -83,12 +106,15 @@ router.get('/checked_out', (req, res, next) => {
   Books
     .findAll()
     .then(books => {
-    res.render('books/checked', {
-      title: 'Checked Out Books',
-      page: req.baseUrl,
-      books: books
+      res.render('books/checked', {
+        title: 'Checked Out Books',
+        page: req.baseUrl,
+        books: books
+      });
+    })
+    .catch((err)=>{
+      res.send(500);
     });
-  });
 });
 
 module.exports = router;
