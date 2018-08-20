@@ -18,7 +18,7 @@ block content
             each book in books
                 tr
                     td
-                        a(href='book_detail.html') #{book.dataValues.title}
+                        a(href=`/books/details/${book.dataValues.id}`) #{book.dataValues.title}
                     td #{book.dataValues.author}
                     td #{book.dataValues.genre}
                     td #{book.dataValues.first_published}
