@@ -89,7 +89,8 @@ router.post('/:id', (req, res, next) => {
       if (err.name === 'SequelizeValidationError') {
         let book =  Books.build(req.body);
         book.id = req.params.id;
-          res.render('books/details', {
+        
+        res.render('books/details', {
             book: book, 
             errors: err.errors
         });
