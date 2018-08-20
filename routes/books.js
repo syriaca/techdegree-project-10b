@@ -61,6 +61,17 @@ router.post('/', (req, res, next) => {
     .then(book => {
       res.redirect('/books/details/'+ book.id);
     })
+    .catch((err) => {
+      if (err.name === 'SequelizeValidationError') {
+        res.render('books/new', { 
+          book: Books.build(), 
+          title: 'New Book',
+          errors: err.errors
+        });
+      } else {
+        throw err;
+      }
+    })
     .catch((err)=> {
       res.send(500);
     });
@@ -80,6 +91,19 @@ router.post('/:id', (req, res, next) => {
     .then(() => {
       res.redirect('/books/details/'+req.params.id)
     })
+    // .catch((err) => {
+    //   if (err.name === 'SequelizeValidationError') {
+    //     let book = Books.build(req.body);
+    //     book.id = req.params.id;
+
+    //     res.render('/books/details/:id', {
+    //       book: book,
+    //       errors: err.errors
+    //     });
+    //   } else {
+    //     throw err;
+    //   }
+    // })
     .catch((err)=> {
       res.send(500);
     });
