@@ -1,9 +1,3 @@
-
-// TODO: LOANS LISTING PAGE
-// 1) Includes option to filter books by “Overdue”, and “Checked Out”
-// 2) The “patron” field links to the patron who checked out the book
-// 3) If the book is checked out, the “Action” column contains a link to return the book
-
 // TODO: NEW LOAN PAGE
 // 1) “Loaned on” is pre-populated with today’s date, 
 //    in YYYY-MM-DD format. “Return by” is 7 days in the future.
@@ -12,26 +6,36 @@
 // 3) An error is displayed if the form is submitted with blank or invalid data 
 
 // TODO: RETURN BOOK PAGE
-// 1) Make pug view & route
-// 2) Displays book title, the patron who borrowed the book, the loaned on and return by dates.
-// 3) Has the “Returned on” field pre-populated with today’s date.
 // 4) Includes a button to return the book
 // 5) When the form is submitted successfully, the loan should be updated in the database
 //    and the page should redirect to the loans listing page.
-// 6) An error is displayed if the form is submitted with blank or invalid 
-//    data in required fields. For example: “This field is required.”
 
 const express = require('express');
 const router = express.Router();
+const sequelize = require('sequelize');
+const op = sequelize.Op;
+const moment = require('moment');
 const Books = require('../models').Books;
 const Loans = require('../models').Loans;
 const Patrons = require('../models').Patrons;
+let now = moment().format('YYYY-MM-DD');
 
 /* GET: All loans list */
 router.get('/', (req, res, next) => {
   Loans
-    .findAll({order:[['loaned_on',"DESC"]]})
+    .findAll({
+      include:[
+        {
+          model: Books
+        },
+        {
+          model: Patrons
+        }      
+    ],
+      order:[['loaned_on',"DESC"]]
+    })
     .then(loans => {
+      console.log(loans)
       res.render('loans/index', {
         title: 'All loans',
         page: req.baseUrl,
@@ -73,12 +77,31 @@ router.post('/', (req, res, next) => {
     });
 });
 
-/* GET: Overdue loan */
+/* GET: Overdue loans */
 router.get('/overdue', (req, res, next) => {
   Loans
-    .findAll()
+    .findAll({
+        include:[
+          {
+            model: Books
+          },
+          {
+            model: Patrons
+          }      
+      ],
+      where: {
+        [op.and]: [{
+          return_by: {
+            [op.lt]: now
+          },
+          returned_on: {
+            [op.eq]: null
+          }
+        }]
+      }
+    })
     .then(loans => {
-      res.render('loans/index', {
+      res.render('loans/overdue', {
         title: 'Overdue loans',
         page: req.baseUrl,
         loans: loans
@@ -92,13 +115,104 @@ router.get('/overdue', (req, res, next) => {
 /* GET: Checked_out loan */
 router.get('/checked_out', (req, res, next) => {
   Loans
-    .findAll()
+    .findAll({
+        include:[
+          {
+            model: Books
+          },
+          {
+            model: Patrons
+          }      
+      ],
+      where: {
+        loaned_on: {
+          [op.ne]: null
+        },
+        returned_on: {
+          [op.eq]: null
+        }
+      }
+    })
     .then(loans => {
+      console.log(loans[0])
       res.render('loans/checked', {
         title: 'Checked out loans',
         page: req.baseUrl,
         loans: loans
       });
+    })
+    .catch((err)=> {
+      res.send(500);
+    });
+});
+
+/* GET: Return loan */
+router.get('/return/:id', (req, res, next) => {
+  Loans
+    .findAll({
+      include:[
+        {
+          model: Books
+        },
+        {
+          model: Patrons
+        }      
+    ],
+    where: {
+      book_id: req.params.id
+    }
+    })
+    .then(loans => {
+      res.render('loans/return', {
+        title: 'Patron: Return Book',
+        page: req.baseUrl,
+        loans: loans,
+        today: now
+      });
+    })
+    .catch((err)=> {
+      res.send(500);
+    });
+});
+
+/* POST: Update return loan */
+router.post('/:id', (req, res, next) => {
+  Loans
+    .findAll({
+      include:[
+        {
+          model: Books
+        },
+        {
+          model: Patrons
+        }      
+    ],
+    where: {
+      book_id: req.params.id
+    }
+    })
+    .then(loans => {
+      if (loans) {
+        return loans.update(req.body);
+      } else {
+        res.send(404);
+      }
+    })
+    .then(() => {
+      res.redirect('/books/details/'+req.params.id)
+    })
+    .catch((err) => {
+      if (err.name === 'SequelizeValidationError') {
+        let loan =  Loans.build(req.body);
+        loan.id = req.params.id;
+        
+        res.render('books/details', {
+            loan: loan, 
+            errors: err.errors
+        });
+      } else {
+        throw err;
+      }
     })
     .catch((err)=> {
       res.send(500);

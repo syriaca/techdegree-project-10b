@@ -3,7 +3,7 @@ extends ../layout
 block content
     h1 #{title}
     p
-      a.button(href='new_loan.html') Create New Loan
+      a.button(href='/loans/new') Create New Loan
     
     include ../includes/navigation-filter.pug
 
@@ -17,13 +17,15 @@ block content
           th Returned on
           th Action
       tbody
-        tr
-          td
-            a(href='book_detail.html') Harry Potter and the Goblet of Fire
-          td
-            a(href='patron_detail.html') Andrew Chalkley
-          td 2015-12-11
-          td 2015-12-18
-          td
-          td
-            a.button(href='return_book.html') Return Book
+        each loan, index in loans
+          tr
+            td
+              a(href=`/books/details/${loans[index].dataValues.Book.dataValues.id}`) #{loans[index].dataValues.Book.dataValues.title}
+            td
+              a(href=`/patrons/details/${loans[index].dataValues.Patron.dataValues.id}`) #{loans[index].dataValues.Patron.dataValues.first_name} #{loans[index].dataValues.Patron.dataValues.last_name}
+
+            td #{loans[index].dataValues.loaned_on}
+            td #{loans[index].dataValues.return_by}
+            td #{loans[index].dataValues.returned_on}
+            td
+              a.button(href='return_book.html') Return Book

@@ -7,7 +7,17 @@ module.exports = (sequelize, DataTypes) => {
     patron_id: DataTypes.INTEGER,
     loaned_on: DataTypes.DATE,
     return_by: DataTypes.DATE,
-    returned_on: DataTypes.DATE
+    returned_on: {
+      type: DataTypes.DATE,
+      validate: {
+        notEmpty: {
+          msg: 'The date field must be filled'
+        },
+        isDate: {
+          msg: 'Must be a valide date'
+        }
+      }
+    }
   }, {
     timestamps: false
   });
