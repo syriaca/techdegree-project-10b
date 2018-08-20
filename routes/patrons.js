@@ -4,7 +4,6 @@
 // 3) An error is displayed if the form is submitted with blank or invalid data 
 //    in required fields. For example: “This field is required.”
 
-
 // TODO: NEW PATRON PAGE
 // 1) An error is displayed if the form is submitted with blank or invalid data 
 //    in required fields. For example: “This field is required.”
@@ -22,7 +21,10 @@ router.get('/', (req, res, next) => {
         title: 'All patrons',
         patrons: patrons
       });
-  });
+    })
+    .catch((err)=> {
+      res.send(500);
+    });
 });
 
 /* GET: Show individual patron */
@@ -33,14 +35,23 @@ router.get('/details/:id', (req, res, next) => {
       res.render('patrons/details', {
         patron: patron
       });
-  });
+    })
+    .catch((err)=> {
+      res.send(500);
+    });
 });
 
 /* POST: Update patron details */
 router.post('/:id', (req, res, next) => {
   Patrons
     .findById(req.params.id)
-    .then(patron => {return patron.update(req.body);})
+    .then(patron => {
+      if (patron) {
+        return patron.update(req.body);
+      } else {
+        res.send(404);
+      }
+    })
     .then(() => {res.redirect('/patrons/details/'+req.params.id);});
 });
 
@@ -54,8 +65,11 @@ router.post('/', (req, res, next) => {
   Patrons
     .create(req.body)
     .then(patron => {
-    res.redirect('/patrons/details/'+ patron.id);
-  });
+      res.redirect('/patrons/details/'+ patron.id);
+    })
+    .catch((err)=> {
+      res.send(500);
+    });
 });
 
 module.exports = router;

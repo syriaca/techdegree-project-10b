@@ -26,7 +26,7 @@ router.get('/', (req, res, next) => {
         books: books
       });
     })
-    .catch((err)=>{
+    .catch((err)=> {
       res.send(500);
     });
 });
@@ -44,7 +44,7 @@ router.get('/details/:id', (req, res, next) => {
         res.send(404);
       }  
     })
-    .catch((err)=>{
+    .catch((err)=> {
       res.send(500);
     });
 });
@@ -61,7 +61,7 @@ router.post('/', (req, res, next) => {
     .then(book => {
       res.redirect('/books/details/'+ book.id);
     })
-    .catch((err)=>{
+    .catch((err)=> {
       res.send(500);
     });
 });
@@ -80,7 +80,7 @@ router.post('/:id', (req, res, next) => {
     .then(() => {
       res.redirect('/books/details/'+req.params.id)
     })
-    .catch((err)=>{
+    .catch((err)=> {
       res.send(500);
     });
 });
@@ -96,7 +96,7 @@ router.get('/overdue', (req, res, next) => {
         books: books
       });
     })
-    .catch((err)=>{
+    .catch((err)=> {
       res.send(500);
     });
 });
@@ -112,7 +112,7 @@ router.get('/checked_out', (req, res, next) => {
         books: books
       });
     })
-    .catch((err)=>{
+    .catch((err)=> {
       res.send(500);
     });
 });

@@ -21,10 +21,6 @@
 // 6) An error is displayed if the form is submitted with blank or invalid 
 //    data in required fields. For example: “This field is required.”
 
-
-
-
-
 const express = require('express');
 const router = express.Router();
 const Books = require('../models').Books;
@@ -41,6 +37,9 @@ router.get('/', (req, res, next) => {
         page: req.baseUrl,
         loans: loans
       });
+    })    
+    .catch((err)=> {
+      res.send(500);
     });
 });
 
@@ -58,6 +57,9 @@ router.get('/new', (req, res, next)=> {
           books: books,
           patrons: patrons
         });
+      })
+      .catch((err)=> {
+        res.send(500);
       });
   });
 });
@@ -81,6 +83,9 @@ router.get('/overdue', (req, res, next) => {
         page: req.baseUrl,
         loans: loans
       });
+    })
+    .catch((err)=> {
+      res.send(500);
     });
 });
 
@@ -94,6 +99,9 @@ router.get('/checked_out', (req, res, next) => {
         page: req.baseUrl,
         loans: loans
       });
+    })
+    .catch((err)=> {
+      res.send(500);
     });
 });
 
