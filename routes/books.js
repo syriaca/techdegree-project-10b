@@ -1,13 +1,17 @@
-// TODO: BOOKS LISTING PAGE
-// 1) Includes option to filter books by “Overdue”, and “Checked Out”
-
 // TODO: BOOK DETAIL PAGE
 // 1) Contains a Loan History table with the following columns: book name, patron, loaned on, return by, returned on and action.
 // 2) If the book is checked out, the “Action” column contains a link to return the book
 
 const express = require('express');
 const router = express.Router();
+const sequelize = require('sequelize');
+const op = sequelize.Op;
+const moment = require('moment');
+
 const Books = require('../models').Books;
+const Loans = require('../models').Loans;
+const Patrons = require('../models').Patrons;
+let now = moment().format('YYYY-MM-DD');
 
 /* GET: Show book list */
 router.get('/', (req, res, next) => {
@@ -106,7 +110,21 @@ router.post('/:id', (req, res, next) => {
 /* GET: Show overdue books list */
 router.get('/overdue', (req, res, next) => {
   Books
-    .findAll()
+    .findAll({
+      include: [{
+        model: Loans,
+        where: {
+          [op.and]: [{
+            return_by: {
+              [op.lt]: now
+            },
+            returned_on: {
+              [op.eq]: null
+            }
+          }]
+        }
+      }]
+    })
     .then(books => {
       res.render('books/overdue', {
         title: 'Overdue Books',
@@ -122,8 +140,21 @@ router.get('/overdue', (req, res, next) => {
 /* GET: Show checked out books list */
 router.get('/checked_out', (req, res, next) => {
   Books
-    .findAll()
+    .findAll({
+      include: [{
+        model: Loans,
+        where: {
+          loaned_on: {
+            [op.ne]: null
+          },
+          returned_on: {
+            [op.eq]: null
+          }
+        }
+      }]
+    })
     .then(books => {
+      console.log(books);
       res.render('books/checked', {
         title: 'Checked Out Books',
         page: req.baseUrl,

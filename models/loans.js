@@ -13,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Loans.associate = function(models) {
-    Loans.belongsTo(models.Books, { foreignKey: 'book_id' });
-    Loans.belongsTo(models.Patrons, { foreignKey: 'patron_id' });
+    Loans.belongsTo(models.Books, {targetKey:'id', foreignKey: 'book_id' });
+    Loans.belongsTo(models.Patrons, {targetKey:'id', foreignKey: 'patron_id' });
   };
 
   Loans.prototype.formatedDate = function (date) {
