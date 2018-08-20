@@ -1,12 +1,6 @@
 // TODO: PATRON DETAIL PAGE
 // 1) Shows a Loan History table
 // 2) Each entry in the loans table should have links to books, patrons and if the book is checked out, the link to the return book page.
-// 3) An error is displayed if the form is submitted with blank or invalid data 
-//    in required fields. For example: “This field is required.”
-
-// TODO: NEW PATRON PAGE
-// 1) An error is displayed if the form is submitted with blank or invalid data 
-//    in required fields. For example: “This field is required.”
 
 const express = require('express');
 const router = express.Router();
@@ -41,20 +35,6 @@ router.get('/details/:id', (req, res, next) => {
     });
 });
 
-/* POST: Update patron details */
-router.post('/:id', (req, res, next) => {
-  Patrons
-    .findById(req.params.id)
-    .then(patron => {
-      if (patron) {
-        return patron.update(req.body);
-      } else {
-        res.send(404);
-      }
-    })
-    .then(() => {res.redirect('/patrons/details/'+req.params.id);});
-});
-
 /* GET: Show patron creation form page */
 router.get('/new', (req, res, next) => {
   res.render('patrons/new', { patron: Patrons.build(), title: 'New Patron' });
@@ -67,8 +47,35 @@ router.post('/', (req, res, next) => {
     .then(patron => {
       res.redirect('/patrons/details/'+ patron.id);
     })
+    .catch((err) => {
+      if (err.name === 'SequelizeValidationError') {
+        res.render('patrons/new', { 
+          patron: Patrons.build(), 
+          title: 'New Patron',
+          errors: err.errors
+        });
+      } else {
+        throw err;
+      }
+    })
     .catch((err)=> {
       res.send(500);
+    });
+});
+
+/* POST: Update patron details */
+router.post('/:id', (req, res, next) => {
+  Patrons
+    .findById(req.params.id)
+    .then(patron => {
+      if (patron) {
+        return patron.update(req.body);
+      } else {
+        res.send(404);
+      }
+    })
+    .then(() => {
+      res.redirect('/patrons/details/'+req.params.id);
     });
 });
 

@@ -1,12 +1,65 @@
 'use strict';
+
 module.exports = (sequelize, DataTypes) => {
   var Patrons = sequelize.define('Patrons', {
-    first_name: DataTypes.STRING,
-    last_name: DataTypes.STRING,
-    address: DataTypes.STRING,
-    email: DataTypes.STRING,
-    library_id: DataTypes.STRING,
-    zip_code: DataTypes.INTEGER
+    first_name: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          msg: 'The firstname field is required'
+        }
+      }              
+    },
+    last_name: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          msg: 'The lastname field is required'
+        }
+      }              
+    },
+    address: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          msg: 'The address field is required'
+        }
+      }              
+    },
+    email: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          msg: 'The email field is required'
+        }
+      }              
+    },
+    library_id: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          msg: 'The library ID field is required'
+        }
+      }              
+    },
+    zip_code: {
+      type: DataTypes.INTEGER,
+      validate: {
+        notEmpty: {
+          msg: 'Zip code field is required'
+        },
+        isNumeric: {
+          msg: 'Zip code field must be numeric'
+        },
+        len: {
+          args: [6, 10], 
+          msg: 'Zip code must contain between 4 and 10 numbers'
+        },
+        isInt: {
+          msg: 'Zip code must be a number'
+        }
+      }
+    }
   }, {
     timestamps: false
   });
