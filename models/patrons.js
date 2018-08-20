@@ -52,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'Zip code field must be numeric'
         },
         len: {
-          args: [6, 10], 
+          args: [4, 10], 
           msg: 'Zip code must contain between 4 and 10 numbers'
         },
         isInt: {
