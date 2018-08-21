@@ -1,10 +1,12 @@
-// TODO: PATRON DETAIL PAGE
-// 1) Shows a Loan History table
-// 2) Each entry in the loans table should have links to books, patrons and if the book is checked out, the link to the return book page.
-
 const express = require('express');
 const router = express.Router();
+const sequelize = require('sequelize');
+const op = sequelize.Op;
+const moment = require('moment');
+const Books = require('../models').Books;
+const Loans = require('../models').Loans;
 const Patrons = require('../models').Patrons;
+let now = moment().format('YYYY-MM-DD');
 
 /* GET: Show all patrons list */
 router.get('/', (req, res, next) => {
@@ -26,13 +28,35 @@ router.get('/details/:id', (req, res, next) => {
   Patrons
     .findById(req.params.id)
     .then(patron => {
-      res.render('patrons/details', {
-        patron: patron
+      Loans
+      .findAll({
+        include: [{
+          model: Patrons
+        },
+        {
+          model: Books
+        }],
+        where: {
+          patron_id: req.params.id
+        }
+      })
+      .then(loans => {
+        if(patron) {
+          res.render('patrons/details', {
+            patron: patron,
+            loans: loans
+          });
+        } else {
+          res.send(404);
+        }  
+      })    
+      .catch((err)=> {
+        res.send(500);
       });
-    })
-    .catch((err)=> {
-      res.send(500);
-    });
+  })
+.catch((err)=> {
+  res.send(500);
+});
 });
 
 /* GET: Show patron creation form page */

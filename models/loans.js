@@ -1,4 +1,5 @@
 'use strict';
+
 var dateFormat = require('dateformat');
 
 module.exports = (sequelize, DataTypes) => {

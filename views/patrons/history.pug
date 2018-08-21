@@ -1,0 +1,26 @@
+h2 Loan History
+if(loans.length > 0)
+    table
+        thead
+            tr
+            th Book
+            th Patron 
+            th Loaned on
+            th Return by 
+            th Returned on
+            th Action
+        tbody
+            each loan in loans
+                tr
+                td
+                    a(href=`/books/details/${loan.Book.id}`) #{loan.Book.title}
+                td
+                    a(href=`/patrons/details/${loan.Patron.id}`) #{loan.Patron.first_name + ' ' + loan.Patron.last_name}
+                td #{loan.loaned_on}
+                td #{loan.return_by}
+                td
+                td
+                    if(loan.returned_on === null)
+                        a.button(href=`/loans/return/${loan.Book.id}`) Return Book
+else
+    p That user has never loan any book yet, you can #[a(href='/loans/new/') create a loan now] if needed.

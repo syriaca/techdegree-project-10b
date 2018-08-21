@@ -1,7 +1,3 @@
-// TODO: BOOK DETAIL PAGE
-// 1) Contains a Loan History table with the following columns: book name, patron, loaned on, return by, returned on and action.
-// 2) If the book is checked out, the “Action” column contains a link to return the book
-
 const express = require('express');
 const router = express.Router();
 const sequelize = require('sequelize');
