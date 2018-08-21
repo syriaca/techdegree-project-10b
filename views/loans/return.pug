@@ -4,22 +4,22 @@ block content
     h1 #{title}
     p
         strong Book Title: 
-        | #{loans[0].dataValues.Book.title}
+        | #{loans[0].Book.title}
     p
         strong Loaned By: 
-        | #{loans[0].dataValues.Patron.first_name + ' ' + loans[0].dataValues.Patron.last_name}
+        | #{loans[0].Patron.first_name + ' ' + loans[0].Patron.last_name}
     p
         strong Loaned On: 
-        | #{loans[0].dataValues.loaned_on}
+        | #{loans[0].loaned_on}
     p
         strong Return By: 
-        | #{loans[0].dataValues.return_by}
+        | #{loans[0].return_by}
 
-    form(action=`/loans/${loans[0].dataValues.Book.id}` method='post')
+    form(action=`/loans/${loans[0].Book.id}` method='post')
         include ../error.pug
         p
             label(for='returned_on') Returned on:
-            input#returned_on(type='text', value=`${today}`)
+            input#returned_on(type='text', value=`${returned_on}`)
         p
             input(type='submit', value='Return Book')
 

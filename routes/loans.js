@@ -72,7 +72,6 @@ router.post('/', (req, res, next) => {
   Loans
     .create(req.body)
     .then((loan) => {
-      console.log(loan);
       res.redirect('/loans');
     });
 });
@@ -146,28 +145,28 @@ router.get('/checked_out', (req, res, next) => {
 });
 
 /* GET: Return loan */
-router.get('/return/:id', (req, res, next) => {
+router.get('/return/:bookId/:patronId', (req, res, next) => {
   Loans
     .findAll({
-      include:[
-        {
-          model: Books
-        },
-        {
-          model: Patrons
-        }      
-    ],
-    where: {
-      book_id: req.params.id
-    }
+        include:[
+          {
+            model: Books
+          },
+          {
+            model: Patrons
+          }      
+      ],
+      where: {
+        book_id: req.params.bookId,
+        patron_id: req.params.patronId
+      }
     })
     .then(loans => {
       res.render('loans/return', {
-        title: 'Patron: Return Book',
+        title: 'Patron: Return book',
         page: req.baseUrl,
         loans: loans,
-        today: today,
-        returnDate: returnDate
+        returned_on: today
       });
     })
     .catch((err)=> {

@@ -18,9 +18,9 @@ if(loans.length > 0)
                     a(href=`/patrons/details/${loan.Patron.id}`) #{loan.Patron.first_name + ' ' + loan.Patron.last_name}
                 td #{loan.loaned_on}
                 td #{loan.return_by}
-                td
+                td #{loan.returned_on}
                 td
                     if(loan.returned_on === null)
-                        a.button(href=`/loans/return/${loan.Book.id}`) Return Book
+                        a.button(href=`/loans/return/${loan.Book.id}/${loan.Patron.id}`) Return Book
 else
     p That user has never loan any book yet, you can #[a(href='/loans/new/') create a loan now] if needed.
