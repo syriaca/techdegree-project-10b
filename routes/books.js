@@ -152,7 +152,6 @@ router.get('/checked_out', (req, res, next) => {
       }]
     })
     .then(books => {
-      console.log(books);
       res.render('books/checked', {
         title: 'Checked Out Books',
         page: req.baseUrl,

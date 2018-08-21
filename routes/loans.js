@@ -6,7 +6,6 @@
 // 3) An error is displayed if the form is submitted with blank or invalid data 
 
 // TODO: RETURN BOOK PAGE
-// 4) Includes a button to return the book
 // 5) When the form is submitted successfully, the loan should be updated in the database
 //    and the page should redirect to the loans listing page.
 
@@ -35,7 +34,6 @@ router.get('/', (req, res, next) => {
       order:[['loaned_on',"DESC"]]
     })
     .then(loans => {
-      console.log(loans)
       res.render('loans/index', {
         title: 'All loans',
         page: req.baseUrl,
@@ -134,7 +132,6 @@ router.get('/checked_out', (req, res, next) => {
       }
     })
     .then(loans => {
-      console.log(loans[0])
       res.render('loans/checked', {
         title: 'Checked out loans',
         page: req.baseUrl,
