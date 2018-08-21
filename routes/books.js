@@ -9,6 +9,7 @@ const op = sequelize.Op;
 const moment = require('moment');
 const Books = require('../models').Books;
 const Loans = require('../models').Loans;
+const Patrons = require('../models').Patrons;
 let now = moment().format('YYYY-MM-DD');
 
 /* GET: Show book list */
@@ -32,17 +33,35 @@ router.get('/details/:id', (req, res, next) => {
   Books
     .findById(req.params.id)
     .then(book => {
-      if (book) {
-        res.render('books/details', { 
-          book: book
+      Loans
+        .findAll({
+          include: [{
+            model: Patrons
+          },
+          {
+            model: Books
+          }],
+          where: {
+            book_id: req.params.id
+          }
+        })
+        .then(loans => {
+          if (book) {
+            res.render('books/details', { 
+              book: book,
+              loans: loans
+            });
+          } else {
+            res.send(404);
+          }  
+        })    
+        .catch((err)=> {
+          res.send(500);
         });
-      } else {
-        res.send(404);
-      }  
     })
-    .catch((err)=> {
-      res.send(500);
-    });
+  .catch((err)=> {
+    res.send(500);
+  });
 });
 
 /* GET: Show new book creation page */
