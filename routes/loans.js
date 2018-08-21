@@ -175,7 +175,7 @@ router.get('/return/:bookId/:patronId', (req, res, next) => {
 });
 
 /* POST: Update return loan */
-router.post('/:id', (req, res, next) => {
+router.post('/:bookId/:patronId', (req, res, next) => {
   Loans
     .findAll({
       include:[
@@ -185,10 +185,11 @@ router.post('/:id', (req, res, next) => {
         {
           model: Patrons
         }      
-    ],
-    where: {
-      book_id: req.params.id
-    }
+      ],
+      where: {
+        book_id: req.params.bookId,
+        patron_id: req.params.patronId
+      }
     })
     .then(loans => {
       if (loans) {
@@ -198,7 +199,7 @@ router.post('/:id', (req, res, next) => {
       }
     })
     .then(() => {
-      res.redirect('/books/details/'+req.params.id)
+      res.redirect('/loans')
     })
     .catch((err) => {
       if (err.name === 'SequelizeValidationError') {
