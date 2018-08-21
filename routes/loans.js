@@ -1,6 +1,4 @@
 // TODO: NEW LOAN PAGE
-// 1) “Loaned on” is pre-populated with today’s date, 
-//    in YYYY-MM-DD format. “Return by” is 7 days in the future.
 // 2) When the form is submitted successfully, a loan is created in the database 
 //      and the user should be redirected to the loan listing page.
 // 3) An error is displayed if the form is submitted with blank or invalid data 
@@ -17,7 +15,8 @@ const moment = require('moment');
 const Books = require('../models').Books;
 const Loans = require('../models').Loans;
 const Patrons = require('../models').Patrons;
-let now = moment().format('YYYY-MM-DD');
+let today = moment().format('YYYY-MM-DD');
+let returnBy = moment().add(7, 'days').format('YYYY-MM-DD')
 
 /* GET: All loans list */
 router.get('/', (req, res, next) => {
@@ -57,7 +56,9 @@ router.get('/new', (req, res, next)=> {
           title: 'New loans',
           page: req.baseUrl,
           books: books,
-          patrons: patrons
+          patrons: patrons,
+          today: today,
+          returnBy: returnBy          
         });
       })
       .catch((err)=> {
@@ -90,7 +91,7 @@ router.get('/overdue', (req, res, next) => {
       where: {
         [op.and]: [{
           return_by: {
-            [op.lt]: now
+            [op.lt]: today
           },
           returned_on: {
             [op.eq]: null
@@ -164,7 +165,8 @@ router.get('/return/:id', (req, res, next) => {
         title: 'Patron: Return Book',
         page: req.baseUrl,
         loans: loans,
-        today: now
+        today: today,
+        returnDate: returnDate
       });
     })
     .catch((err)=> {

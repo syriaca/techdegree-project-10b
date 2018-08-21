@@ -6,7 +6,7 @@ const moment = require('moment');
 const Books = require('../models').Books;
 const Loans = require('../models').Loans;
 const Patrons = require('../models').Patrons;
-let now = moment().format('YYYY-MM-DD');
+let today = moment().format('YYYY-MM-DD');
 
 /* GET: Show book list */
 router.get('/', (req, res, next) => {
@@ -129,7 +129,7 @@ router.get('/overdue', (req, res, next) => {
         where: {
           [op.and]: [{
             return_by: {
-              [op.lt]: now
+              [op.lt]: today
             },
             returned_on: {
               [op.eq]: null
