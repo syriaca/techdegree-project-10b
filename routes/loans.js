@@ -71,7 +71,8 @@ router.get('/new', (req, res, next)=> {
 router.post('/', (req, res, next) => {
   Loans
     .create(req.body)
-    .then(() => {
+    .then((loan) => {
+      console.log(loan);
       res.redirect('/loans');
     });
 });

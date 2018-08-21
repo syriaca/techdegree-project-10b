@@ -104,13 +104,27 @@ router.post('/:id', (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'SequelizeValidationError') {
-        let book =  Books.build(req.body);
-        book.id = req.params.id;
-        
-        res.render('books/details', {
-            book: book, 
-            errors: err.errors
-        });
+        Loans
+          .findAll({
+            include: [{
+              model: Patrons
+            },
+            {
+              model: Books
+            }],
+            where: {
+              book_id: req.params.id
+            }
+          })
+          .then(loans => {
+            let book =  Books.build(req.body);
+            book.id = req.params.id;            
+            res.render('books/details', {
+                book: book, 
+                loans: loans,
+                errors: err.errors
+            });
+          })
       } else {
         throw err;
       }

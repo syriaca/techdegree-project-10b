@@ -69,6 +69,7 @@ router.post('/', (req, res, next) => {
   Patrons
     .create(req.body)
     .then(patron => {
+      console.log(patron);
       res.redirect('/patrons/details/'+ patron.id);
     })
     .catch((err) => {
@@ -103,13 +104,28 @@ router.post('/:id', (req, res, next) => {
     })    
     .catch((err) => {
       if (err.name === 'SequelizeValidationError') {
-        let patron =  Patrons.build(req.body);
-        patron.id = req.params.id;
-
-        res.render('patrons/details', {
-            patron: patron, 
-            errors: err.errors
-        });
+        Loans
+          .findAll({
+            include: [{
+              model: Patrons
+            },
+            {
+              model: Books
+            }],
+            where: {
+              book_id: req.params.id
+            }
+          })
+          .then(loans => {
+            let patron =  Patrons.build(req.body);
+            patron.id = req.params.id;
+    
+            res.render('patrons/details', {
+                patron: patron,
+                loans: loans,
+                errors: err.errors
+            });
+          })      
       } else {
         throw err;
       }
