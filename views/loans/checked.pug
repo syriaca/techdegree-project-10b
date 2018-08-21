@@ -17,7 +17,7 @@ block content
                 th Returned on
                 th Action
         tbody
-            each loan, index in loans
+            each loan in loans
                 tr
                     td
                         a(href=`/books/details/${loan.Book.id}`) #{loan.Book.title}
