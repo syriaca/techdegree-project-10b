@@ -1,7 +1,5 @@
 'use strict';
 
-var dateFormat = require('dateformat');
-
 module.exports = (sequelize, DataTypes) => {
   var Loans = sequelize.define('Loans', {
     book_id: DataTypes.INTEGER,
@@ -27,10 +25,6 @@ module.exports = (sequelize, DataTypes) => {
     Loans.belongsTo(models.Books, {targetKey:'id', foreignKey: 'book_id' });
     Loans.belongsTo(models.Patrons, {targetKey:'id', foreignKey: 'patron_id' });
   };
-
-  Loans.prototype.formatedDate = function (date) {
-    return dateFormat(date, "isoDate");
-  };
-
+  
   return Loans;
 };

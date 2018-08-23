@@ -15,7 +15,7 @@ block content
         strong Return By: 
         | #{loans[0].return_by}
 
-    form(action=`/loans/return/${loans[0].Book.id}/${loans[0].Patron.id}` method='post')
+    form(action=`/loans/return/${loans[0].id}` method='post')
         include ../error.pug
         p
             label(for='returned_on') Returned on:

@@ -145,7 +145,7 @@ router.get('/checked_out', (req, res, next) => {
 });
 
 /* GET: Return loan */
-router.get('/return/:bookId/:patronId', (req, res, next) => {
+router.get('/return/:id', (req, res, next) => {
   Loans
     .findAll({
         include:[
@@ -157,8 +157,7 @@ router.get('/return/:bookId/:patronId', (req, res, next) => {
           }      
       ],
       where: {
-        book_id: req.params.bookId,
-        patron_id: req.params.patronId
+        id: req.params.id
       }
     })
     .then(loans => {
@@ -175,24 +174,12 @@ router.get('/return/:bookId/:patronId', (req, res, next) => {
 });
 
 /* POST: Update return loan */
-router.post('/:bookId/:patronId', (req, res, next) => {
+router.post('/return/:id', (req, res, next) => {
   Loans
-    .findAll({
-      include:[
-        {
-          model: Books
-        },
-        {
-          model: Patrons
-        }      
-      ],
-      where: {
-        book_id: req.params.bookId,
-        patron_id: req.params.patronId
-      }
-    })
+    .findById(req.params.id)
     .then(loans => {
       if (loans) {
+        loans.returned_on = req.body.returned_on;
         return loans.update(req.body);
       } else {
         res.send(404);
@@ -203,11 +190,11 @@ router.post('/:bookId/:patronId', (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'SequelizeValidationError') {
-        let loan =  Loans.build(req.body);
-        loan.id = req.params.id;
+        let loans =  Loans.build(req.body);
+        loans.id = req.params.id;
         
-        res.render('books/details', {
-            loan: loan, 
+        res.render('loans/details', {
+            loans: loans, 
             errors: err.errors
         });
       } else {
