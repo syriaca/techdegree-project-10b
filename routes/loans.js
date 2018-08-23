@@ -190,16 +190,34 @@ router.post('/return/:id', (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'SequelizeValidationError') {
-        let loans =  Loans.build(req.body);
-        loans.id = req.params.id;
-        
-        res.render('loans/details', {
-            loans: loans, 
+        console.log('error');
+        Loans
+        .findAll({
+            include:[
+              {
+                model: Books
+              },
+              {
+                model: Patrons
+              }      
+          ],
+          where: {
+            id: req.params.id
+          }
+        })
+        .then(loans => {
+          res.render('loans/return', {
+            title: 'Patron: Return book',
+            page: req.baseUrl,
+            loans: loans,
+            returned_on: today,
             errors: err.errors
-        });
-      } else {
-        throw err;
+          });
+        })
       }
+      // else {
+      //   throw err;
+      // }
     })
     .catch((err)=> {
       res.send(500);
