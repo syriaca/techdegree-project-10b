@@ -16,9 +16,11 @@ if(loans.length > 0)
                     a(href=`/books/details/${loan.Book.id}`) #{loan.Book.title}
                 td
                     a(href=`/patrons/details/${loan.Patron.id}`) #{loan.Patron.first_name + ' ' + loan.Patron.last_name}
-                td #{loan.loaned_on}
-                td #{loan.return_by}
-                td
+                td #{loan.formatedDate(loan.loaned_on)}
+                td #{loan.formatedDate(loan.return_by)}
+                td 
+                    if(loan.returned_on != null)
+                        #{loan.formatedDate(loan.returned_on)}
                 td
                     if(loan.returned_on === null)
                         a.button(href=`/loans/return/${loan.id}`) Return Book
