@@ -69,7 +69,6 @@ router.post('/', (req, res, next) => {
   Patrons
     .create(req.body)
     .then(patron => {
-      console.log(patron);
       res.redirect('/patrons/details/'+ patron.id);
     })
     .catch((err) => {

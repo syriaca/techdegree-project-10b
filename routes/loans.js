@@ -190,7 +190,6 @@ router.post('/return/:id', (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'SequelizeValidationError') {
-        console.log('error');
         Loans
         .findAll({
             include:[
