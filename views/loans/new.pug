@@ -3,7 +3,9 @@ extends ../layout
 block content
   h1 #{title}
   form(action='/loans' method='post')
+
     include ../error.pug
+    
     p
       label(for='book_id') Book
       select#book_id(name='book_id')

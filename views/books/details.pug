@@ -2,8 +2,9 @@ extends ../layout
 
 block content
     h1 Book: #{book.title}
-    form(action=`/books/${book.id}`, method='post')
-        include ../error.pug
+    form(action=`/books/${book.id}`, method='post')  
+
+        include ../error.pug        
         
         p
             label(for='title') Title
