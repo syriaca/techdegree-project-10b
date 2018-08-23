@@ -215,9 +215,9 @@ router.post('/return/:id', (req, res, next) => {
           });
         })
       }
-      // else {
-      //   throw err;
-      // }
+      else {
+        throw err;
+      }
     })
     .catch((err)=> {
       res.send(500);
