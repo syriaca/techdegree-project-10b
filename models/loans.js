@@ -6,13 +6,33 @@ module.exports = (sequelize, DataTypes) => {
   var Loans = sequelize.define('Loans', {
     book_id: DataTypes.INTEGER,
     patron_id: DataTypes.INTEGER,
-    loaned_on: DataTypes.DATE,
-    return_by: DataTypes.DATE,
+    loaned_on: {
+      type: DataTypes.DATE,
+      validate: {
+        notEmpty: {
+          msg: 'The loaned on field must be filled'
+        },
+        isDate: {
+          msg: 'Must be a valide date'
+        }
+      }
+    },
+    return_by: {
+      type: DataTypes.DATE,
+      validate: {
+        notEmpty: {
+          msg: 'The return by field must be filled'
+        },
+        isDate: {
+          msg: 'Must be a valide date'
+        }
+      }
+    },
     returned_on: {
       type: DataTypes.DATE,
       validate: {
         notEmpty: {
-          msg: 'The date field must be filled'
+          msg: 'The returned on field must be filled'
         },
         isDate: {
           msg: 'Must be a valide date'

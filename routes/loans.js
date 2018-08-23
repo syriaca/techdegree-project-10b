@@ -1,12 +1,3 @@
-// TODO: NEW LOAN PAGE
-// 2) When the form is submitted successfully, a loan is created in the database 
-//      and the user should be redirected to the loan listing page.
-// 3) An error is displayed if the form is submitted with blank or invalid data 
-
-// TODO: RETURN BOOK PAGE
-// 5) When the form is submitted successfully, the loan should be updated in the database
-//    and the page should redirect to the loans listing page.
-
 const express = require('express');
 const router = express.Router();
 const sequelize = require('sequelize');
@@ -71,8 +62,37 @@ router.get('/new', (req, res, next)=> {
 router.post('/', (req, res, next) => {
   Loans
     .create(req.body)
-    .then((loan) => {
+    .then(loan => {
       res.redirect('/loans');
+    })
+    .catch((err) => {
+      if (err.name === 'SequelizeValidationError') {
+        Books
+          .findAll()
+          .then(books => {
+            Patrons
+              .findAll()
+              .then(patrons => {
+                res.render('loans/new', {
+                  title: 'New loans',
+                  page: req.baseUrl,
+                  books: books,
+                  patrons: patrons,
+                  today: today,
+                  returnBy: returnBy,
+                  errors: err.errors      
+                });
+              })
+            .catch((err)=> {
+              res.send(500);
+            });
+          });
+      } else {
+        throw err;
+      }
+    })
+    .catch((err)=> {
+      res.send(500);
     });
 });
 
