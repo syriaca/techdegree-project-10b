@@ -10,10 +10,10 @@ block content
         | #{loans[0].Patron.first_name + ' ' + loans[0].Patron.last_name}
     p
         strong Loaned On: 
-        | #{loans[0].loaned_on}
+        | #{loans[0].formatedDate(loaned_on)}
     p
         strong Return By: 
-        | #{loans[0].return_by}
+        | #{loans[0].formatedDate(return_by)}
 
     form(action=`/loans/return/${loans[0].id}` method='post')
         include ../error.pug

@@ -47,8 +47,10 @@ module.exports = (sequelize, DataTypes) => {
   }, {
       timestamps: false
   });
+
   Books.associate = function(models) {
     Books.hasMany(models.Loans, {foreignKey: 'book_id'});
   };
+  
   return Books;
 };

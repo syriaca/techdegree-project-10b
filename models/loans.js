@@ -1,5 +1,7 @@
 'use strict';
 
+var moment = require('moment');
+
 module.exports = (sequelize, DataTypes) => {
   var Loans = sequelize.define('Loans', {
     book_id: DataTypes.INTEGER,
@@ -24,6 +26,10 @@ module.exports = (sequelize, DataTypes) => {
   Loans.associate = function(models) {
     Loans.belongsTo(models.Books, {targetKey:'id', foreignKey: 'book_id' });
     Loans.belongsTo(models.Patrons, {targetKey:'id', foreignKey: 'patron_id' });
+  };
+
+  Loans.prototype.formatedDate = function(date) {
+    return moment(date).format('YYYY-MM-DD');
   };
   
   return Loans;

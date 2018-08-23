@@ -104,7 +104,7 @@ router.get('/overdue', (req, res, next) => {
         title: 'Overdue loans',
         page: req.baseUrl,
         loans: loans
-      });
+      })
     })
     .catch((err)=> {
       res.send(500);
