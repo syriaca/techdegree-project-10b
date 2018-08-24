@@ -28,21 +28,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     first_published: {
       type: DataTypes.INTEGER,
-      validate: {
-        notEmpty: {
-          msg: 'First published field is required'
-        },
-        isNumeric: {
-          msg: 'First published field must be numeric'
-        },
-        len: {
-          args: 4,
-          msg: 'Year date must be 4 numeric date'
-        },
-        isInt: {
-          msg: 'First published field must be an integer'
-        }
-      }
     }
   }, {
       timestamps: false

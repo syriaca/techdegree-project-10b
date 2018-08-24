@@ -70,7 +70,7 @@ router.post('/', (req, res, next) => {
   Books
     .create(req.body)
     .then(book => {
-      res.redirect('/books/details/'+ book.id);
+      res.redirect('/books');
     })
     .catch((err) => {
       if (err.name === 'SequelizeValidationError') {
