@@ -62,7 +62,15 @@ router.get('/details/:id', (req, res, next) => {
 
 /* GET: Show new book creation page */
 router.get('/new', (req, res, next) => {
-  res.render('books/new', { book: Books.build(), title: 'New Book' });
+  res.render('books/new', { 
+    book: Books.build({
+      title: '',
+      author: '',
+      genre: '',
+      first_published: ''
+    }),
+    title: 'New Book' 
+  });
 });
 
 /* POST: Create a new Book */
@@ -75,7 +83,12 @@ router.post('/', (req, res, next) => {
     .catch((err) => {
       if (err.name === 'SequelizeValidationError') {
         res.render('books/new', { 
-          book: Books.build(), 
+          book: Books.build({
+            title: req.body.title,
+            author: req.body.author,
+            genre: req.body.genre,
+            first_published: req.body.first_published
+          }), 
           title: 'New Book',
           errors: err.errors
         });
