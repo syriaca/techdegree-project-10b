@@ -100,7 +100,7 @@ router.post('/:id', (req, res, next) => {
       }
     })
     .then(() => {
-      res.redirect('/books/details/'+req.params.id)
+      res.redirect('/books')
     })
     .catch((err) => {
       if (err.name === 'SequelizeValidationError') {
