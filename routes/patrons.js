@@ -61,20 +61,37 @@ router.get('/details/:id', (req, res, next) => {
 
 /* GET: Show patron creation form page */
 router.get('/new', (req, res, next) => {
-  res.render('patrons/new', { patron: Patrons.build(), title: 'New Patron' });
+  res.render('patrons/new', { 
+    patron: Patrons.build({
+      first_name: '',
+      last_name: '',
+      address: '',
+      email: '',
+      library_id: '',
+      zip_code: ''
+  }), 
+  title: 'New Patron' });
 });
 
 /* POST: Create a new patron */
 router.post('/', (req, res, next) => {
   Patrons
     .create(req.body)
-    .then(patron => {
+    .then(() => {
       res.redirect('/patrons');
     })
     .catch((err) => {
       if (err.name === 'SequelizeValidationError') {
+        console.log(req.body.first_name);
         res.render('patrons/new', { 
-          patron: Patrons.build(), 
+          patron: Patrons.build({
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+            address: req.body.address,
+            email: req.body.email,
+            library_id: req.body.library_id,
+            zip_code: req.body.zip_code
+          }),          
           title: 'New Patron',
           errors: err.errors
         });
