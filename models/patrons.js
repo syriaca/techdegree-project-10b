@@ -29,6 +29,9 @@ module.exports = (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING,
       validate: {
+        isEmail: {
+          msg: 'The email must follow the format: example@mail.com'
+        },
         notEmpty: {
           msg: 'The email field is required'
         }
