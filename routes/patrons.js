@@ -69,7 +69,7 @@ router.post('/', (req, res, next) => {
   Patrons
     .create(req.body)
     .then(patron => {
-      res.redirect('/patrons/details/'+ patron.id);
+      res.redirect('/patrons');
     })
     .catch((err) => {
       if (err.name === 'SequelizeValidationError') {
